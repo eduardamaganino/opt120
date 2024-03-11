@@ -1,3 +1,4 @@
+CREATE DATABASE opt120
 USE opt120;
 
 CREATE TABLE Usuario (
