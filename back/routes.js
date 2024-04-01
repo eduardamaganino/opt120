@@ -4,18 +4,24 @@ const router = express.Router()
 const AtividadeController = require('./controllers/atividade-controller')
 const UsuarioController = require('./controllers/usuario-controller')
 
-router.get('/usuarios', (req, res) => {
+/*router.get('/usuarios', (req, res) => {
     connection.query('SELECT * FROM opt120.Usuario', (err, results) => {
       if (err) throw err;
       res.json(results);
       console.log(res)
     });
-  });
+  });*/
 
 router.post('/novaTarefa',AtividadeController.newActivity)
+router.post('/newUser',UsuarioController.newUser)
 
 router.get('/showAtv', AtividadeController.showActivity)
 router.get('/showUser', UsuarioController.showUser)
 
+router.get('/deleteAtv', AtividadeController.deleteActivity)
+router.get('/deleteUser', UsuarioController.deleteUser)
+
+router.get('/updateAtv', AtividadeController.updateActivity)
+router.get('/updateUser', UsuarioController.updateUser)
 
 module.exports = router

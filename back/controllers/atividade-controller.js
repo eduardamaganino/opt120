@@ -1,24 +1,19 @@
 const database = require('../database/connection')
-const connection = require('../database/connection')
 
 class AtividadeController {
-    newActivity(request, response){
+    newActivity(req, res){
         const {titulo, descricao, nota, data_atv} = request.body
 
-        console.log(titulo, descricao, nota, data_atv)
-
-        database.insert({titulo, descricao, nota, data_atv}),table("Atividade").then(data=>{
-            console.log(data)
-            response.json({message:"Tarefa criada com sucesso !"}) 
-        }).catch(error=>{
-            console.log(error)
-        })
+        database.query('INSERT INTO opt120.Atividade (titulo, descricao, nota, data_atv) VALUES (?, ?, ?)', [titulo, descricao, nota, data_atv], (err, results) => {
+            if (err) throw err;
+            res.json(results);
+        });
     }
 
-    showActivity(request, response){
-        const query = 'SELECT * FROM opt120.Usuario';
+    showActivity(res, req){
+        const query = 'SELECT * FROM opt120.Atividade';
     
-        connection.query(query, (error, results) => {
+        database.query(query, (error, results) => {
             if (error) {
                 console.error(error);
                 response.status(500).json({ error: 'Erro interno do servidor' });
@@ -30,12 +25,21 @@ class AtividadeController {
         });
     }
 
-    deleteActivity(request, response){
-        
+    deleteActivity(req, res){
+        const { id } = req.params;
+        database.query('DELETE FROM opt120.Atividade WHERE id = ?', [id], (err, results) => {
+            if (err) throw err;
+            res.json(results);
+        });
     }
 
-    updateActivity(request, response){
-        
+    updateActivity(req, res){
+        const {titulo, descricao, nota, data_atv} = req.body;
+        const {id} = req.params;
+        database.query('UPDATE opt120.Atividade SET titulo = ?, descricao = ? WHERE id = ?', [titulo, descricao, id], (err, results) => {
+            if (err) throw err;
+            res.json(results);
+          });
     }
 
 

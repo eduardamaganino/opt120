@@ -3,12 +3,11 @@ const database = require('../database/connection')
 class UsuarioController {
     newUser(req, res){
         const {nome, email, senha} = req.body
-        database.insert(nome, email, senha),table("Usuario").then(data=>{
-            console.log(data)
-            res.json({message:"Usuario criado com sucesso !"}) 
-        }).catch(error=>{
-            console.log(error)
-        })
+        database.query('INSERT INTO opt120.Usuario (nome, email, senha) VALUES (?, ?, ?)', [nome, email, senha], (err, results) => {
+            if (err) throw err;
+            res.json(results);
+        });
+    
     }
 
     showUser(req, res){

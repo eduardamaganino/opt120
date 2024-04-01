@@ -1,4 +1,4 @@
-const mysql = require('mysql');
+const mysql = require('mysql2');
 
 const connection = mysql.createConnection({
   host: 'localhost',
@@ -14,25 +14,6 @@ connection.connect((err) => {
   }
   console.log('Conectado ao banco de dados MySQL');
   
-  showActivities();
 });
 
-function showActivities() {
-  const query = 'SELECT * FROM Usuario';
-  
-  connection.query(query, (error, results) => {
-    if (error) {
-      console.error('Erro ao executar consulta:', error);
-      return;
-    }
-    
-    console.log('Resultado da consulta:', results);
-    connection.end((err) => {
-      if (err) {
-        console.error('Erro ao encerrar conexão:', err);
-        return;
-      }
-      console.log('Conexão encerrada com sucesso');
-    });
-  });
-}
+module.exports = connection;
