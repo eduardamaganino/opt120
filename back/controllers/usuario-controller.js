@@ -33,14 +33,13 @@ class UsuarioController {
         });
     }
 
-    updateUser(req,res){
-        const {nome, email, senha} = req.body;
-        const {id} = req.params;
+    updateUser(req, res) {
+        const { nome, email, senha } = req.body;
+        const { id } = req.params;
         database.query('UPDATE opt120.Usuario SET nome = ?, email = ? WHERE id = ?', [nome, email, id], (err, results) => {
             if (err) throw err;
             res.json(results);
-          });
-
+        });
     }
 
 

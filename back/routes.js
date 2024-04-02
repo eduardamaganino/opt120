@@ -18,10 +18,10 @@ router.post('/newUser',UsuarioController.newUser)
 router.get('/showAtv', AtividadeController.showActivity)
 router.get('/showUser', UsuarioController.showUser)
 
-router.get('/deleteAtv', AtividadeController.deleteActivity)
-router.get('/deleteUser', UsuarioController.deleteUser)
+router.delete('/deleteAtv/:id', AtividadeController.deleteActivity)
+router.delete('/deleteUser/:id', UsuarioController.deleteUser)
 
-router.get('/updateAtv', AtividadeController.updateActivity)
-router.get('/updateUser', UsuarioController.updateUser)
+router.put('/updateAtv/:id', AtividadeController.updateActivity)
+router.put('/updateUser/:id', UsuarioController.updateUser)
 
 module.exports = router
