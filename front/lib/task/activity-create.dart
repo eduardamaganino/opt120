@@ -14,7 +14,7 @@ class _CreateTaskWidgetState extends State<CreateTaskWidget> {
   String titulo = '';
   String descricao = '';
   String nota = '';
-  String dataAtv = '';
+  String data_atv = '';
 
   @override
   Widget build(BuildContext context) {
@@ -75,7 +75,7 @@ class _CreateTaskWidgetState extends State<CreateTaskWidget> {
               ),
               onChanged: (value) {
                 setState(() {
-                  dataAtv = value;
+                  data_atv = value;
                 });
               },
             ),
@@ -86,7 +86,7 @@ class _CreateTaskWidgetState extends State<CreateTaskWidget> {
                 backgroundColor: Colors.pink, // Set the text color
               ),
               onPressed: () async {
-                final task = Task(titulo, descricao, nota, dataAtv);
+                final task = Task(titulo, descricao, nota, data_atv);
                 // TODO: Implement logic to create user
 
                 final response = await http.post(
@@ -98,7 +98,7 @@ class _CreateTaskWidgetState extends State<CreateTaskWidget> {
                     'titulo': titulo,
                     'descricao': descricao,
                     'nota': nota,
-                    'dataAtv': dataAtv,
+                    'data_atv': data_atv,
                   }),
                 );
 

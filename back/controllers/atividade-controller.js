@@ -2,26 +2,25 @@ const database = require('../database/connection')
 
 class AtividadeController {
     newActivity(req, res){
-        const {titulo, descricao, nota, data_atv} = request.body
-
-        database.query('INSERT INTO opt120.Atividade (titulo, descricao, nota, data_atv) VALUES (?, ?, ?)', [titulo, descricao, nota, data_atv], (err, results) => {
+        const {titulo, descricao, nota, data_atv} = req.body
+        database.query('INSERT INTO opt120.Atividade (titulo, descricao, nota, data_atv) VALUES (?, ?, ?, ?)', [titulo, descricao, nota, data_atv], (err, results) => {
             if (err) throw err;
             res.json(results);
         });
     }
 
-    showActivity(res, req){
+    showActivity(req, res){
         const query = 'SELECT * FROM opt120.Atividade';
-    
+        const teste = []
         database.query(query, (error, results) => {
             if (error) {
                 console.error(error);
-                response.status(500).json({ error: 'Erro interno do servidor' });
+                res.status(500).json({ error: 'Erro interno do servidor' });
                 return;
             }
             
             console.log(results);
-            response.json(results);
+            res.json(results);
         });
     }
 
