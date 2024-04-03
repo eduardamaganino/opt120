@@ -2,25 +2,26 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/models/atividade.model.dart';
+import 'package:flutter_application_1/models/usuario-atividade.model.dart';
 // Remove the unused import directive
 import 'package:http/http.dart' as http;
 
-class CreateTaskWidget extends StatefulWidget {
+class CreateUserTaskWidget extends StatefulWidget {
   @override
-  _CreateTaskWidgetState createState() => _CreateTaskWidgetState();
+  _CreateUserTaskWidgetState createState() => _CreateUserTaskWidgetState();
 }
 
-class _CreateTaskWidgetState extends State<CreateTaskWidget> {
-  String titulo = '';
-  String descricao = '';
+class _CreateUserTaskWidgetState extends State<CreateUserTaskWidget> {
+  int usuarioId = 0;
+  int atividadeId = 0;
   String nota = '';
-  String dataAtv = '';
+  String entrega = '';
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Create Task'),
+        title: const Text('Create UserTask'),
         backgroundColor: Colors.pink,
       ),
       body: Padding(
@@ -30,26 +31,39 @@ class _CreateTaskWidgetState extends State<CreateTaskWidget> {
           children: [
             TextField(
               decoration: const InputDecoration(
-                labelText: 'Titulo',
+                labelText: 'UsuarioID',
                 border: OutlineInputBorder(),
                 contentPadding: EdgeInsets.all(10),
               ),
               onChanged: (value) {
                 setState(() {
-                  titulo = value;
+                  usuarioId = value as int;
                 });
               },
             ),
             SizedBox(height: 10), // Add some spacing
             TextField(
               decoration: const InputDecoration(
-                labelText: 'Descrição',
+                labelText: 'AtividadeId',
                 border: OutlineInputBorder(),
                 contentPadding: EdgeInsets.all(10),
               ),
               onChanged: (value) {
                 setState(() {
-                  descricao = value;
+                  atividadeId = value as int;
+                });
+              },
+            ),
+            SizedBox(height: 10), // Add some spacing
+            TextField(
+              decoration: const InputDecoration(
+                labelText: 'Entrega',
+                border: OutlineInputBorder(),
+                contentPadding: EdgeInsets.all(10),
+              ),
+              onChanged: (value) {
+                setState(() {
+                  entrega = value;
                 });
               },
             ),
@@ -66,19 +80,6 @@ class _CreateTaskWidgetState extends State<CreateTaskWidget> {
                 });
               },
             ),
-            SizedBox(height: 10), // Add some spacing
-            TextField(
-              decoration: const InputDecoration(
-                labelText: 'Data',
-                border: OutlineInputBorder(),
-                contentPadding: EdgeInsets.all(10),
-              ),
-              onChanged: (value) {
-                setState(() {
-                  dataAtv = value;
-                });
-              },
-            ),
             const SizedBox(height: 10), // Add some spacing
             ElevatedButton(
               style: ElevatedButton.styleFrom(
@@ -86,30 +87,26 @@ class _CreateTaskWidgetState extends State<CreateTaskWidget> {
                 backgroundColor: Colors.pink, // Set the text color
               ),
               onPressed: () async {
-                final task = Task(titulo, descricao, nota, dataAtv);
-                // TODO: Implement logic to create user
+                final userTask =
+                    UserTask(usuarioId, atividadeId, entrega, nota);
 
                 final response = await http.post(
-                  Uri.parse('http://localhost:3000/newAtv'),
+                  Uri.parse('http://localhost:3000/newUserAtv'),
                   headers: <String, String>{
                     'Content-Type': 'application/json; charset=UTF-8',
                   },
                   body: jsonEncode(<String, String>{
-                    'titulo': titulo,
-                    'descricao': descricao,
+                    'usuarioId': usuarioId.toString(),
+                    'atividadeId': atividadeId.toString(),
+                    'entrega': entrega,
                     'nota': nota,
-                    'dataAtv': dataAtv,
                   }),
                 );
 
                 if (response.statusCode == 200) {
-                  // If the server returns a 200 OK response,
-                  // then parse the JSON.
                   print('User created successfully');
                 } else {
-                  // If the server did not return a 200 OK response,
-                  // then throw an exception.
-                  throw Exception('Failed to create user');
+                  throw Exception('Failed to create usertask');
                 }
               },
               child: const Text('Create'),

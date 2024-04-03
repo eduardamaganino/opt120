@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_application_1/models/atividade.model.dart';
 import 'package:flutter_application_1/models/usuario.model.dart';
 import 'package:flutter_application_1/task/activity-list.dart';
+import 'package:flutter_application_1/user-task/user-task-list.dart';
 import 'package:flutter_application_1/user/user-create.dart';
 import 'package:flutter_application_1/user/user-list.dart';
 import 'package:http/http.dart' as http;
@@ -46,6 +47,8 @@ class _HomePageState extends State<HomePage> {
                 cardName: 'User', backgroundColor: Colors.pink.shade100),
             _SampleCard(
                 cardName: 'Task', backgroundColor: Colors.pink.shade100),
+            _SampleCard(
+                cardName: 'UserTask', backgroundColor: Colors.pink.shade100),
           ],
         ),
       ),
@@ -74,12 +77,18 @@ class _SampleCard extends StatelessWidget {
             MaterialPageRoute(builder: (context) => TaskList()),
           );
         }
+        if (cardName == 'UserTask') {
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => UserTaskList()),
+          );
+        }
       },
       child: Card(
         color: backgroundColor,
         child: Container(
           width: 600,
-          height: 200,
+          height: 100,
           child: Center(child: Text(cardName)),
         ),
       ),
