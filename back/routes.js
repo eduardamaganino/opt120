@@ -5,13 +5,7 @@ const AtividadeController = require('./controllers/atividade-controller')
 const UsuarioController = require('./controllers/usuario-controller')
 const usuarioAtividadeController = require('./controllers/usuario-atividade-controller')
 
-/*router.get('/usuarios', (req, res) => {
-    connection.query('SELECT * FROM opt120.Usuario', (err, results) => {
-      if (err) throw err;
-      res.json(results);
-      console.log(res)
-    });
-  });*/
+router.post('/login', UsuarioController.login)
 
 router.post('/newAtv',AtividadeController.newActivity)
 router.post('/newUser',UsuarioController.newUser)
@@ -20,6 +14,7 @@ router.post('/newUserAtv', usuarioAtividadeController.newUserActivity)
 
 router.get('/showAtv', AtividadeController.showActivity)
 router.get('/showUser', UsuarioController.showUser)
+router.get('/showUserId/:id', UsuarioController.showUserById)
 router.get('/showUserAtv', usuarioAtividadeController.showUserActivity)
 
 

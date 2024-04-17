@@ -52,7 +52,10 @@ class _UserListState extends State<UserList> {
               mainAxisSize: MainAxisSize.min,
               children: <Widget>[
                 IconButton(
-                  icon: Icon(Icons.edit),
+                  icon: Icon(
+                    Icons.edit,
+                    color: Colors.pink,
+                  ),
                   onPressed: () {
                     Navigator.push(
                       context,
@@ -65,7 +68,7 @@ class _UserListState extends State<UserList> {
                   },
                 ),
                 IconButton(
-                  icon: Icon(Icons.delete),
+                  icon: Icon(Icons.delete, color: Colors.pink),
                   onPressed: () async {
                     // Send delete request to the backend
                     final response = await http.delete(Uri.parse(
@@ -119,13 +122,17 @@ class _UserListState extends State<UserList> {
         },
       ),
       floatingActionButton: FloatingActionButton(
+        backgroundColor: Colors.pink.shade200,
         onPressed: () {
           Navigator.push(
             context,
             MaterialPageRoute(builder: (context) => CreateUserWidget()),
           );
         },
-        child: Icon(Icons.add),
+        child: Icon(
+          Icons.add,
+          color: Colors.pink,
+        ),
       ),
     );
   }

@@ -21,61 +21,109 @@ class _CreateUserWidgetState extends State<CreateUserWidget> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Create User'),
-        backgroundColor: Colors.pink,
+        title: const Text('Cadastro de usuario'),
+        backgroundColor: const Color.fromARGB(255, 255, 255, 255),
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            TextField(
-              decoration: const InputDecoration(
-                labelText: 'Nome',
-                border: OutlineInputBorder(),
-                contentPadding: EdgeInsets.all(10),
-              ),
-              onChanged: (value) {
-                setState(() {
-                  nome = value;
-                });
-              },
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const Text(
+                  'Nome',
+                  style: TextStyle(
+                    fontWeight: FontWeight.w400,
+                    fontSize: 15,
+                  ),
+                ),
+                const SizedBox(height: 4),
+                SizedBox(
+                  height: 40,
+                  child: TextField(
+                    decoration: const InputDecoration(
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.all(Radius.circular(3)),
+                      ),
+                      contentPadding: EdgeInsets.all(10),
+                    ),
+                    onChanged: (value) {
+                      setState(() {
+                        nome = value;
+                      });
+                    },
+                  ),
+                ),
+              ],
             ),
-            SizedBox(height: 10), // Add some spacing
-            TextField(
-              decoration: const InputDecoration(
-                labelText: 'Email',
-                border: OutlineInputBorder(),
-                contentPadding: EdgeInsets.all(10),
+            const SizedBox(height: 15),
+            const Text(
+              'Email',
+              style: TextStyle(
+                fontWeight: FontWeight.w400,
+                fontSize: 15,
               ),
-              onChanged: (value) {
-                setState(() {
-                  email = value;
-                });
-              },
             ),
-            SizedBox(height: 10), // Add some spacing
-            TextField(
-              decoration: const InputDecoration(
-                labelText: 'Senha',
-                border: OutlineInputBorder(),
-                contentPadding: EdgeInsets.all(10),
+            const SizedBox(height: 4),
+            SizedBox(
+              height: 40,
+              child: TextField(
+                decoration: const InputDecoration(
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.all(Radius.circular(3)),
+                  ),
+                  contentPadding: EdgeInsets.all(10),
+                ),
+                onChanged: (value) {
+                  setState(() {
+                    email = value;
+                  });
+                },
               ),
-              onChanged: (value) {
-                setState(() {
-                  senha = value;
-                });
-              },
             ),
-            const SizedBox(height: 10), // Add some spacing
+            const SizedBox(height: 15),
+            const Text(
+              'Senha',
+              style: TextStyle(
+                fontWeight: FontWeight.w400,
+                fontSize: 15,
+              ),
+            ),
+            const SizedBox(height: 4),
+            SizedBox(
+              height: 40,
+              child: TextField(
+                decoration: const InputDecoration(
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.all(Radius.circular(3)),
+                  ),
+                  contentPadding: EdgeInsets.all(10),
+                ),
+                onChanged: (value) {
+                  setState(() {
+                    senha = value;
+                  });
+                },
+              ),
+            ),
+            const SizedBox(
+              height: 30,
+            ),
             ElevatedButton(
               style: ElevatedButton.styleFrom(
-                foregroundColor: Colors.white,
-                backgroundColor: Colors.pink, // Set the text color
+                padding: EdgeInsets.zero,
+                minimumSize: Size(double.infinity, 40),
+                alignment: Alignment.center,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(2),
+                ),
+                foregroundColor: const Color.fromARGB(255, 255, 255, 255),
+                backgroundColor: Colors.pink.shade400,
               ),
               onPressed: () async {
                 final user = User(nome, email, senha);
-                // TODO: Implement logic to create user
 
                 final response = await http.post(
                   Uri.parse('http://localhost:3000/newUser'),
@@ -90,16 +138,44 @@ class _CreateUserWidgetState extends State<CreateUserWidget> {
                 );
 
                 if (response.statusCode == 200) {
-                  // If the server returns a 200 OK response,
-                  // then parse the JSON.
-                  print('User created successfully');
+                  showDialog(
+                    context: context,
+                    builder: (BuildContext context) {
+                      return AlertDialog(
+                        title: Text('Parabens!'),
+                        content: Text('Usuario criada com sucesso'),
+                        actions: [
+                          TextButton(
+                            onPressed: () {
+                              Navigator.of(context).pop();
+                            },
+                            child: Text('OK'),
+                          ),
+                        ],
+                      );
+                    },
+                  );
                 } else {
-                  // If the server did not return a 200 OK response,
-                  // then throw an exception.
-                  throw Exception('Failed to create user');
+                  showDialog(
+                    context: context,
+                    builder: (BuildContext context) {
+                      return AlertDialog(
+                        title: Text('Error'),
+                        content: Text('Erro ao criar tarefa'),
+                        actions: [
+                          TextButton(
+                            onPressed: () {
+                              Navigator.of(context).pop();
+                            },
+                            child: Text('OK'),
+                          ),
+                        ],
+                      );
+                    },
+                  );
                 }
               },
-              child: const Text('Create'),
+              child: const Text('Criar'),
             ),
           ],
         ),

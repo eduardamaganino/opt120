@@ -51,6 +51,27 @@ class _TaskListState extends State<TaskList> {
               mainAxisSize: MainAxisSize.min,
               children: <Widget>[
                 IconButton(
+                  icon: Icon(Icons.check),
+                  onPressed: () => showDialog(
+                    //finalizar a tarefa criando a feita
+                    context: context,
+                    builder: (BuildContext context) {
+                      return AlertDialog(
+                        title: Text('Success'),
+                        content: Text('Task completed successfully'),
+                        actions: [
+                          TextButton(
+                            onPressed: () {
+                              Navigator.of(context).pop();
+                            },
+                            child: Text('OK'),
+                          ),
+                        ],
+                      );
+                    },
+                  ),
+                ),
+                IconButton(
                   icon: Icon(Icons.edit),
                   onPressed: () {
                     Navigator.push(
@@ -116,15 +137,6 @@ class _TaskListState extends State<TaskList> {
             ),
           );
         },
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          Navigator.push(
-            context,
-            MaterialPageRoute(builder: (context) => CreateTaskWidget()),
-          );
-        },
-        child: Icon(Icons.add),
       ),
     );
   }

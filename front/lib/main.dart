@@ -1,12 +1,16 @@
 import 'dart:convert';
+import 'package:flutter_application_1/user/user-page.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/models/atividade.model.dart';
 import 'package:flutter_application_1/models/usuario.model.dart';
+import 'package:flutter_application_1/task/activity-create.dart';
 import 'package:flutter_application_1/task/activity-list.dart';
 import 'package:flutter_application_1/user-task/user-task-list.dart';
 import 'package:flutter_application_1/user/user-create.dart';
 import 'package:flutter_application_1/user/user-list.dart';
+import 'package:flutter_application_1/user/user-login.dart';
 import 'package:http/http.dart' as http;
 
 void main() => runApp(MyApp());
@@ -19,7 +23,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: const HomePage(),
+      home: LoginPage(),
     );
   }
 }
@@ -32,65 +36,50 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  int _selectedIndex = 1;
+
+  static final List<Widget> _widgetOptions = <Widget>[
+    UserPageWidget(),
+    TaskList(),
+    CreateTaskWidget(),
+  ];
+
+  void _onItemTapped(int index) {
+    setState(() {
+      _selectedIndex = index;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('OPT120'),
+        title: Text(_selectedIndex == 0
+            ? 'Home'
+            : _selectedIndex == 1
+                ? 'Pagina de usuario'
+                : 'Cadastro de nova atividade'),
         backgroundColor: Colors.pink.shade200,
       ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            _SampleCard(
-                cardName: 'User', backgroundColor: Colors.pink.shade100),
-            _SampleCard(
-                cardName: 'Task', backgroundColor: Colors.pink.shade100),
-            _SampleCard(
-                cardName: 'UserTask', backgroundColor: Colors.pink.shade100),
-          ],
-        ),
-      ),
-    );
-  }
-}
-
-class _SampleCard extends StatelessWidget {
-  const _SampleCard({required this.cardName, required this.backgroundColor});
-  final String cardName;
-  final Color backgroundColor;
-
-  @override
-  Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: () {
-        if (cardName == 'User') {
-          Navigator.push(
-            context,
-            MaterialPageRoute(builder: (context) => UserList()),
-          );
-        }
-        if (cardName == 'Task') {
-          Navigator.push(
-            context,
-            MaterialPageRoute(builder: (context) => TaskList()),
-          );
-        }
-        if (cardName == 'UserTask') {
-          Navigator.push(
-            context,
-            MaterialPageRoute(builder: (context) => UserTaskList()),
-          );
-        }
-      },
-      child: Card(
-        color: backgroundColor,
-        child: Container(
-          width: 600,
-          height: 100,
-          child: Center(child: Text(cardName)),
-        ),
+      body: _widgetOptions.elementAt(_selectedIndex),
+      bottomNavigationBar: BottomNavigationBar(
+        items: const <BottomNavigationBarItem>[
+          BottomNavigationBarItem(
+            icon: Icon(Icons.person),
+            label: 'User',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.home),
+            label: 'Home',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.check),
+            label: 'Tasks',
+          ),
+        ],
+        currentIndex: _selectedIndex,
+        selectedItemColor: Colors.pink,
+        onTap: _onItemTapped,
       ),
     );
   }

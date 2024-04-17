@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_application_1/models/atividade.model.dart';
 // Remove the unused import directive
 import 'package:http/http.dart' as http;
+import 'package:flutter/material.dart';
+import 'package:intl/intl.dart'; // Importa o pacote intl para formatar datas
 
 class CreateTaskWidget extends StatefulWidget {
   @override
@@ -16,78 +18,143 @@ class _CreateTaskWidgetState extends State<CreateTaskWidget> {
   String nota = '';
   String data_atv = '';
 
+  Future<void> _selectDate(BuildContext context) async {
+    final DateTime? pickedDate = await showDatePicker(
+      context: context,
+      initialDate: DateTime.now(),
+      firstDate: DateTime(2015, 8),
+      lastDate: DateTime(2101),
+    );
+    if (pickedDate != null) {
+      setState(() {
+        data_atv = DateFormat('yyyy-MM-dd').format(pickedDate);
+      });
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Create Task'),
-        backgroundColor: Colors.pink,
-      ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            TextField(
-              decoration: const InputDecoration(
-                labelText: 'Titulo',
-                border: OutlineInputBorder(),
-                contentPadding: EdgeInsets.all(10),
+            const Text(
+              'Titulo',
+              style: TextStyle(
+                fontWeight: FontWeight.w400,
+                fontSize: 15,
               ),
-              onChanged: (value) {
-                setState(() {
-                  titulo = value;
-                });
-              },
             ),
-            SizedBox(height: 10), // Add some spacing
-            TextField(
-              decoration: const InputDecoration(
-                labelText: 'Descrição',
-                border: OutlineInputBorder(),
-                contentPadding: EdgeInsets.all(10),
+            const SizedBox(height: 4),
+            SizedBox(
+              height: 40,
+              child: TextField(
+                decoration: const InputDecoration(
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.all(Radius.circular(3)),
+                  ),
+                  contentPadding: EdgeInsets.all(10),
+                ),
+                onChanged: (value) {
+                  setState(() {
+                    titulo = value;
+                  });
+                },
               ),
-              onChanged: (value) {
-                setState(() {
-                  descricao = value;
-                });
-              },
             ),
-            SizedBox(height: 10), // Add some spacing
-            TextField(
-              decoration: const InputDecoration(
-                labelText: 'Nota',
-                border: OutlineInputBorder(),
-                contentPadding: EdgeInsets.all(10),
+            SizedBox(height: 15),
+            const Text(
+              'Descricao',
+              style: TextStyle(
+                fontWeight: FontWeight.w400,
+                fontSize: 15,
               ),
-              onChanged: (value) {
-                setState(() {
-                  nota = value;
-                });
-              },
             ),
-            SizedBox(height: 10), // Add some spacing
-            TextField(
-              decoration: const InputDecoration(
-                labelText: 'Data',
-                border: OutlineInputBorder(),
-                contentPadding: EdgeInsets.all(10),
+            const SizedBox(height: 4),
+            SizedBox(
+              height: 40,
+              child: TextField(
+                decoration: const InputDecoration(
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.all(Radius.circular(3)),
+                  ),
+                  contentPadding: EdgeInsets.all(10),
+                ),
+                onChanged: (value) {
+                  setState(() {
+                    descricao = value;
+                  });
+                },
               ),
-              onChanged: (value) {
-                setState(() {
-                  data_atv = value;
-                });
-              },
             ),
-            const SizedBox(height: 10), // Add some spacing
+            SizedBox(height: 15),
+            const Text(
+              'Nota',
+              style: TextStyle(
+                fontWeight: FontWeight.w400,
+                fontSize: 15,
+              ),
+            ),
+            const SizedBox(height: 4),
+            SizedBox(
+              height: 40,
+              child: TextField(
+                decoration: const InputDecoration(
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.all(Radius.circular(3)),
+                  ),
+                  contentPadding: EdgeInsets.all(10),
+                ),
+                onChanged: (value) {
+                  setState(() {
+                    nota = value;
+                  });
+                },
+              ),
+            ),
+            SizedBox(height: 15),
+            const Text(
+              'Data da atividade',
+              style: TextStyle(
+                fontWeight: FontWeight.w400,
+                fontSize: 15,
+              ),
+            ),
+            const SizedBox(height: 4),
+            SizedBox(
+              height: 40,
+              child: GestureDetector(
+                onTap: () => _selectDate(context),
+                child: AbsorbPointer(
+                  child: TextFormField(
+                    decoration: InputDecoration(
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.all(Radius.circular(3)),
+                      ),
+                      contentPadding: EdgeInsets.all(10),
+                      suffixIcon: Icon(Icons.calendar_today),
+                    ),
+                    controller: TextEditingController(text: data_atv),
+                  ),
+                ),
+              ),
+            ),
+            const SizedBox(height: 35),
             ElevatedButton(
               style: ElevatedButton.styleFrom(
-                foregroundColor: Colors.white,
-                backgroundColor: Colors.pink, // Set the text color
+                padding: EdgeInsets.zero,
+                minimumSize: Size(double.infinity, 40),
+                alignment: Alignment.center,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(2),
+                ),
+                foregroundColor: const Color.fromARGB(255, 255, 255, 255),
+                backgroundColor: Colors.pink.shade400,
               ),
               onPressed: () async {
                 final task = Task(titulo, descricao, nota, data_atv);
-                // TODO: Implement logic to create user
 
                 final response = await http.post(
                   Uri.parse('http://localhost:3000/newAtv'),
@@ -98,25 +165,61 @@ class _CreateTaskWidgetState extends State<CreateTaskWidget> {
                     'titulo': titulo,
                     'descricao': descricao,
                     'nota': nota,
-                    'data_atv': data_atv,
+                    'data_atv': data_atv
                   }),
                 );
-
                 if (response.statusCode == 200) {
-                  // If the server returns a 200 OK response,
-                  // then parse the JSON.
-                  print('User created successfully');
+                  showDialog(
+                    context: context,
+                    builder: (BuildContext context) {
+                      return AlertDialog(
+                        title: Text('Parabens!'),
+                        content: Text('Atividade criada com sucesso'),
+                        actions: [
+                          TextButton(
+                            onPressed: () {
+                              Navigator.of(context).pop();
+                            },
+                            child: Text('OK'),
+                          ),
+                        ],
+                      );
+                    },
+                  );
                 } else {
-                  // If the server did not return a 200 OK response,
-                  // then throw an exception.
-                  throw Exception('Failed to create user');
+                  showDialog(
+                    context: context,
+                    builder: (BuildContext context) {
+                      return AlertDialog(
+                        title: Text('Error'),
+                        content: Text('Erro ao criar tarefa'),
+                        actions: [
+                          TextButton(
+                            onPressed: () {
+                              Navigator.of(context).pop();
+                            },
+                            child: Text('OK'),
+                          ),
+                        ],
+                      );
+                    },
+                  );
                 }
+
+                // Your onPressed logic
               },
-              child: const Text('Create'),
+              child: const Text('Criar'),
             ),
           ],
         ),
       ),
     );
   }
+}
+
+void main() {
+  runApp(MaterialApp(
+    title: 'Create Task Example',
+    home: CreateTaskWidget(),
+  ));
 }

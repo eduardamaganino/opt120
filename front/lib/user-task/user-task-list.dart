@@ -54,7 +54,10 @@ class _UserTaskListState extends State<UserTaskList> {
               mainAxisSize: MainAxisSize.min,
               children: <Widget>[
                 IconButton(
-                  icon: Icon(Icons.edit),
+                  icon: Icon(
+                    Icons.edit,
+                    color: Colors.pink,
+                  ),
                   onPressed: () {
                     Navigator.push(
                       context,
@@ -66,7 +69,7 @@ class _UserTaskListState extends State<UserTaskList> {
                   },
                 ),
                 IconButton(
-                  icon: Icon(Icons.delete),
+                  icon: Icon(Icons.delete, color: Colors.pink),
                   onPressed: () async {
                     // Send delete request to the backend
                     final response = await http.delete(Uri.parse(
@@ -116,6 +119,7 @@ class _UserTaskListState extends State<UserTaskList> {
         },
       ),
       floatingActionButton: FloatingActionButton(
+        backgroundColor: Colors.pink, // Defina a cor desejada aqui
         onPressed: () {
           Navigator.push(
             context,

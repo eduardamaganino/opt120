@@ -4,4 +4,6 @@ class User {
   final String senha;
 
   User(this.nome, this.email, this.senha);
+
+  static User? fromJson(jsonData) {}
 }
